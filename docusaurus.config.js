@@ -9,8 +9,8 @@ const config = {
   title: 'Comon Trade API',
   tagline:
     'Сервис для организации взаимодействия пользовательских приложений с сервером TRANSAQ',
-  url: 'https://finamweb.github.io/trade-api-docs',
-  baseUrl: '/',
+  url: 'https://finamweb.github.io',
+  baseUrl: '/trade-api-docs/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
