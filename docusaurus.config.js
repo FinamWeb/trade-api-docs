@@ -4,13 +4,17 @@
 const lightCodeTheme = require('prism-react-renderer/themes/github');
 const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
+const domain = 'https://finamweb.github.io';
+const pathname = '/trade-api-docs/';
+const metaImageUrl = `${domain}${pathname}img/meta-image.png`;
+
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'Comon Trade API',
   tagline:
     'Сервис для организации взаимодействия пользовательских приложений с сервером TRANSAQ',
-  url: 'https://finamweb.github.io',
-  baseUrl: '/trade-api-docs/',
+  url: domain,
+  baseUrl: pathname,
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
@@ -38,10 +42,6 @@ const config = {
           // Serve the docs at the site's root
           routeBasePath: '/',
           sidebarPath: require.resolve('./sidebars.js'),
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
         },
         blog: false,
         theme: {
@@ -54,6 +54,33 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      metadata: [
+        { name: 'twitter:card', content: 'summary_large_image' },
+        {
+          name: 'twitter:image',
+          content: metaImageUrl,
+        },
+        {
+          property: 'og:image:secure_url',
+          content: metaImageUrl,
+        },
+        {
+          property: 'og:image',
+          content: metaImageUrl,
+        },
+        {
+          property: 'og:image:width',
+          content: '1200',
+        },
+        {
+          property: 'og:image:height',
+          content: '630',
+        },
+        {
+          property: 'og:image:alt',
+          content: 'Comon Trade API — Все самое необходимое для алготрейдинга',
+        },
+      ],
       navbar: {
         title: 'Trade API',
         logo: {
