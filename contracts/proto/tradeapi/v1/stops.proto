@@ -1,0 +1,291 @@
+syntax = "proto3";
+
+package proto.tradeapi.v1;
+
+option csharp_namespace = "Finam.TradeApi.Proto.V1";
+
+import "google/protobuf/timestamp.proto";
+import "proto/tradeapi/v1/common.proto";
+
+// Stop order status.
+// Состояние заявки.
+enum StopStatus {
+  // Value is not specified. Do not use.
+  // Значение не указано. Не использовать.
+  STOP_STATUS_UNSPECIFIED = 0;
+  // Order is not in OrderBook.
+  // Заявка не выставлена.
+  STOP_STATUS_NONE = 1;
+  // Order is in OrderBook.
+  // Заявка выставлена.
+  STOP_STATUS_ACTIVE = 2;
+  // Order is cancelled.
+  // Заявка отменена.
+  STOP_STATUS_CANCELLED = 3;
+  // Order is executed.
+  // Заявка выполнена.
+  STOP_STATUS_EXECUTED = 4;
+}
+
+// Stop Order.
+// Стоп-заявка.
+message Stop {
+  // Stop Order Id.
+  // Идентификатор стоп-заявки.
+  int32 stop_id = 1;
+  // Security Code.
+  // Тикер инструмента.
+  string security_code = 2;
+  // Security Board.
+  // Основной режим торгов инструмента.
+  string security_board = 3;
+  // Market.
+  // Рынок.
+  proto.tradeapi.v1.Market market = 4;
+  // Trade Account ID.
+  // Идентификатор торгового счёта.
+  string client_id = 5;
+  // Transaction direction.
+  // Направление сделки.
+  BuySell buy_sell = 6;
+  // Expiration date for FORTS order.
+  // Дата экспирации заявки FORTS.
+  google.protobuf.Timestamp expiration_date = 7;
+  // Linked order ID.
+  // Биржевой номер связанной (активной) заявки.
+  int64 link_order = 8;
+  // Order lifetime.
+  // Время действия заявки.
+  proto.tradeapi.v1.OrderValidBefore valid_before = 9;
+  // Order status.
+  // Состояние заявки.
+  StopStatus status = 10;
+  // Rejection reason or conditional order resolution.
+  // Причина отказа или вердикт по условной заявке.
+  string message = 11;
+  // Order No.
+  // Номер заявки, полученной в результате исполнения стопа.
+  int64 order_no = 12;
+  // Trade No.
+  // Номер сделки, которая привела к исполнению стопа.
+  int64 trade_no = 13;
+  // Time of order registration on the server in UTC.
+  // Время, когда заявка была зарегистрирована на сервере. В UTC.
+  google.protobuf.Timestamp accepted_at = 14;
+  // Time of order canceled on the server in UTC.
+  // Время, когда заявка была отменена на сервере. В UTC.
+  google.protobuf.Timestamp canceled_at = 15;
+  // Price currency.
+  // Валюта цены.
+  string currency = 16;
+  // Take profit: local extremum.
+  // Тейк профит: текущий локальный экстремум.
+  double take_profit_extremum = 17;
+  // Take profit: correction level.
+  // Тейк профит: текущий уровень коррекции.
+  double take_profit_level = 18;
+  // Stop loss.
+  // Стоп лосс.
+  StopLoss stop_loss = 19;
+  // Take profit.
+  // Тейк профит.
+  TakeProfit take_profit = 20;
+}
+
+// StopLoss order.
+// Стоп лосс заявка.
+message StopLoss {
+  // Activation price.
+  // Цена активации.
+  double activation_price = 1;
+  // Price.
+  // Цена заявки.
+  double price = 2;
+  // Market price.
+  // По рынку.
+  bool market_price = 3;
+  // Quantity.
+  // Количество.
+  StopQuantity quantity = 4;
+  // Time, seconds.
+  // Защитное время, сек.
+  int32 time = 5;
+  // Use credit.
+  // Использовать кредит.
+  bool use_credit = 6;
+}
+
+// TakeProfit order.
+// Тейк профит заявка.
+message TakeProfit {
+  // Activation price.
+  // Цена активации.
+  double activation_price = 1;
+  // Correction.
+  // Коррекция.
+  StopPrice correction_price = 2;
+  // Spread price.
+  // Защитный спрэд.
+  StopPrice spread_price = 3;
+  // Market price.
+  // По рынку.
+  bool market_price = 4;
+  // Quantity.
+  // Количество.
+  StopQuantity quantity = 5;
+  // Time, seconds.
+  // Защитное время, сек.
+  int32 time = 6;
+  // Use credit.
+  // Использовать кредит.
+  bool use_credit = 7;
+}
+
+// Stop quantity.
+// Объем стоп-заявки.
+message StopQuantity {
+  // Value.
+  // Значение объема.
+  double value = 1;
+  // Units.
+  // Единицы объема.
+  StopQuantityUnits units = 2;
+}
+
+// Stop quantity units.
+// Единицы объема стоп-заявки.
+enum StopQuantityUnits {
+  // Value is not specified. Do not use.
+  // Значение не указано. Не использовать.
+  STOP_QUANTITY_UNITS_UNSPECIFIED = 0;
+  // Percent.
+  // Значение а процентах.
+  STOP_QUANTITY_UNITS_PERCENT = 1;
+  // Lots.
+  // Значение в лотах.
+  STOP_QUANTITY_UNITS_LOTS = 2;
+}
+
+// Stop price.
+// Цена стоп-заявки.
+message StopPrice {
+  // Value.
+  // Значение цены.
+  double value = 1;
+  // Units.
+  // Единицы цены.
+  StopPriceUnits units = 2;
+}
+
+// Stop price units.
+// Единицы цены стоп-заявки.
+enum StopPriceUnits {
+  // Value is not specified. Do not use.
+  // Значение не указано. Не использовать.
+  STOP_PRICE_UNITS_UNSPECIFIED = 0;
+  // Percent.
+  // Значение а процентах.
+  STOP_PRICE_UNITS_PERCENT = 1;
+  // Lots.
+  // Значение в лотах.
+  STOP_PRICE_UNITS_PIPS = 2;
+}
+
+// Request for Stop Order cancellation.
+// Запрос на снятие стоп-заявки.
+message CancelStopRequest {
+  // Trade Account ID.
+  // Идентификатор торгового счёта.
+  string client_id = 1;
+  // Stop Order Id.
+  // Идентификатор стоп-заявки.
+  int32 stop_id = 2;
+}
+
+// Result of Stop Order cancellation.
+// Результат отмены стоп-заявки.
+message CancelStopResult {
+  // Trade Account ID.
+  // Идентификатор торгового счёта.
+  string client_id = 1;
+  // Stop Order Id.
+  // Идентификатор стоп-заявки.
+  int32 stop_id = 2;
+}
+
+// Request for the list of Stop Orders.
+// Запрос стоп-заявок.
+message GetStopsRequest {
+  // Trade Account ID.
+  // Идентификатор торгового счёта.
+  string client_id = 1;
+  // Include executed stops in response.
+  // Вернуть исполненные стоп-заявки.
+  bool include_executed = 2;
+  // Include canceled stops in response.
+  // Вернуть отмененные стоп-заявки.
+  bool include_canceled = 3;
+  // Include active stops in response.
+  // Вернуть активные стоп-заявки.
+  bool include_active = 4;
+}
+
+// Result of Stop Orders request.
+// Результат запроса стоп-заявок.
+message GetStopsResult {
+  // Trade Account ID.
+  // Идентификатор торгового счёта.
+  string client_id = 1;
+  // Stop Orders List.
+  // Список стоп-заявок.
+  repeated Stop stops = 2;
+}
+
+// New Stop Order request.
+// Запрос на выставление стоп заявки.
+message NewStopRequest {
+  // Trade Account ID.
+  // Идентификатор торгового счёта.
+  string client_id = 1;
+  // Trading Board.
+  // Режим торгов.
+  string security_board = 2;
+  // Security Code.
+  // Тикер инструмента.
+  string security_code = 3;
+  // Transaction direction.
+  // Направление сделки.
+  BuySell buy_sell = 4;
+  // Stop loss.
+  // Стоп лосс.
+  StopLoss stop_loss = 5;
+  // Take profit.
+  // Тейк профит.
+  TakeProfit take_profit = 6;
+  // Expiration date for FORTS order.
+  // Дата экспирации заявки FORTS.
+  google.protobuf.Timestamp expiration_date = 7;
+  // Linked order ID.
+  // Биржевой номер связанной (активной) заявки.
+  int64 link_order = 8;
+  // Order lifetime.
+  // Время действия заявки.
+  proto.tradeapi.v1.OrderValidBefore valid_before = 9;
+}
+
+// Result of new Stop Order request.
+// Результат выставления стоп заявки.
+message NewStopResult {
+  // Trade Account Id.
+  // Идентификатор торгового счёта.
+  string client_id = 1;
+  // Stop Order Id.
+  // Идентификатор стоп заявки.
+  int32 stop_id = 2;
+  // Security Code.
+  // Тикер инструмента.
+  string security_code = 3;
+  // Trading Board.
+  // Режим торгов.
+  string security_board = 4;
+}

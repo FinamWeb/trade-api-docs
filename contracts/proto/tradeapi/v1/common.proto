@@ -1,0 +1,103 @@
+syntax = "proto3";
+
+package proto.tradeapi.v1;
+
+option csharp_namespace = "Finam.TradeApi.Proto.V1";
+
+import "google/protobuf/timestamp.proto";
+
+// Market.
+// Рынок.
+enum Market {
+  // Value is not specified. Do not use.
+  // Значение не указано. Не использовать.
+  MARKET_UNSPECIFIED = 0;
+  // Moscow Exchange Stock market.
+  // Фондовый рынок Московской Биржи.
+  MARKET_STOCK = 1;
+  // Moscow Exchange Derivative market.
+  // Срочный рынок Московской Биржи.
+  MARKET_FORTS = 4;
+  // Saint-Petersburg Exchange.
+  // Санкт-Петербургская биржа.
+  MARKET_SPBEX = 7;
+  // US Stock market.
+  // Фондовый рынок США.
+  MARKET_MMA = 14;
+  // Moscow Exchange Currency market.
+  // Валютный рынок Московской Биржи.
+  MARKET_ETS = 15;
+  // Moscow Exchange Bond market.
+  // Долговой рынок Московской Биржи.
+  MARKET_BONDS = 20;
+  // Moscow Exchange option market.
+  // Рынок опционов Московской Биржи.
+  MARKET_OPTIONS = 21;
+}
+
+// Request execution result.
+// Результат выполнения запроса.
+message ResponseEvent {
+  // Request ID.
+  // Идентификатор запроса.
+  string request_id = 1;
+  // Request execution result.
+  // Результат выполнения запроса.
+  bool success = 2;
+  // Errors in request execution.
+  // Ошибки выполнения запроса.
+  repeated Error errors = 3;
+}
+
+// Error data.
+// Данные об ошибке.
+message Error {
+  // Error code.
+  // Код ошибки.
+  string code = 1;
+  // Error message.
+  // Сообщение об ошибке.
+  string message = 2;
+}
+
+// Transaction direction.
+// Направление сделки.
+enum BuySell {
+  // Value is not specified. Do not use.
+  // Значение не указано. Не использовать.
+  BUY_SELL_UNSPECIFIED = 0;
+  // Sell.
+  // Продажа.
+  BUY_SELL_SELL = 1;
+  // Buy.
+  // Покупка.
+  BUY_SELL_BUY = 2;
+}
+
+// Time validation for order.
+// Установка временных рамок действия заявки.
+enum OrderValidBeforeType {
+  // Value is not specified. Do not use.
+  // Значение не указано. Не использовать.
+  ORDER_VALID_BEFORE_TYPE_UNSPECIFIED = 0;
+  // Order is valid till the end of the current session.
+  // Заявка действует до конца сессии.
+  ORDER_VALID_BEFORE_TYPE_TILL_END_SESSION = 1;
+  // Order is valid till cancellation.
+  // Заявка действует, пока не будет отменена.
+  ORDER_VALID_BEFORE_TYPE_TILL_CANCELLED = 2;
+  // Order is valid till specified moment. OrderValidBefore.time parameter must be set.
+  // Заявка действует до указанного времени. Параметр OrderValidBefore.time должно быть установлен.
+  ORDER_VALID_BEFORE_TYPE_EXACT_TIME = 3;
+}
+
+// Order time condition.
+// Условие по времени действия заявки.
+message OrderValidBefore {
+  // Condition type.
+  // Тип условия.
+  OrderValidBeforeType type = 1;
+  // Order lifetime.
+  // Время действия заявки.
+  google.protobuf.Timestamp time = 2;
+}

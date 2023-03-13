@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package grpc.tradeapi.v1;
+
+option csharp_namespace = "Finam.TradeApi.Grpc.V1";
+
+import "proto/tradeapi/v1/events.proto";
+
+service Events {
+  // Event Service sends events after explicit subscription.
+  // Сервис событий. Отправляет события после вызова соответствующих методов подписки.
+  rpc GetEvents (stream proto.tradeapi.v1.SubscriptionRequest) returns (stream proto.tradeapi.v1.Event);
+}

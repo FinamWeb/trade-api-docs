@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package grpc.tradeapi.v1;
+
+option csharp_namespace = "Finam.TradeApi.Grpc.V1";
+
+import "proto/tradeapi/v1/stops.proto";
+
+service Stops {
+  // Returns the list of Stop Orders.
+  // Возвращает список стоп-заявок.
+  rpc GetStops(proto.tradeapi.v1.GetStopsRequest) returns (proto.tradeapi.v1.GetStopsResult);
+  // Cancels Stop Order.
+  // Снимает стоп-заявку.
+  rpc CancelStop(proto.tradeapi.v1.CancelStopRequest) returns (proto.tradeapi.v1.CancelStopResult);
+  // Creates new Stop Order.
+  // Выставляет стоп-заявку.
+  rpc NewStop(proto.tradeapi.v1.NewStopRequest) returns (proto.tradeapi.v1.NewStopResult);
+}
