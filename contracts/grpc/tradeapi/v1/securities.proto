@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package grpc.tradeapi.v1;
+
+option csharp_namespace = "Finam.TradeApi.Grpc.V1";
+
+import "proto/tradeapi/v1/security.proto";
+
+// Securities list request.
+// Запрос списка инструментов.
+message GetSecuritiesRequest {
+}
+
+// Result of get security lists request.
+// Результат выполнения запроса списка инструментов.
+message GetSecuritiesResult {
+  // Securities list.
+  // Список инструментов.
+  repeated proto.tradeapi.v1.Security securities = 1;
+}
+
+service Securities {
+  // Securities table.
+  // Справочник инструментов.
+  rpc GetSecurities(GetSecuritiesRequest) returns (GetSecuritiesResult);
+}

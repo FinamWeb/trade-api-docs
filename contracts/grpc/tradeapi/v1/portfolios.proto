@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package grpc.tradeapi.v1;
+
+option csharp_namespace = "Finam.TradeApi.Grpc.V1";
+
+import "proto/tradeapi/v1/portfolios.proto";
+
+
+service Portfolios {
+  // Returns portfolio.
+  // Возвращает портфель.
+  rpc GetPortfolio(proto.tradeapi.v1.GetPortfolioRequest) returns (proto.tradeapi.v1.GetPortfolioResult);
+}

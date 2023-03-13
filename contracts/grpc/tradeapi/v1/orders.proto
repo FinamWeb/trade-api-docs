@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package grpc.tradeapi.v1;
+
+option csharp_namespace = "Finam.TradeApi.Grpc.V1";
+
+import "proto/tradeapi/v1/orders.proto";
+
+service Orders {
+  // Creates new order.
+  // Order placement in OrderBook takes some time due to processing speed,
+  // that is why this method returns transaction_id, which can be used
+  // to find corresponding order in GetOrdersRequest or in OrderEvent message
+  // of Events service (EventResponse.event.order).
+  // Создать новую заявку.
+  // На обработку нового поручения по размещению заявки в биржевой стакан
+  // требуется некоторое время, поэтому этот метод возвращает структуру с
+  // transaction_id, которая может быть использована для поиска соответствующей
+  // заявки через GetOrdersRequest или в сообщении OrderEvent от сервиса событий
+  // (EventResponse.event.order).
+  rpc NewOrder(proto.tradeapi.v1.NewOrderRequest) returns (proto.tradeapi.v1.NewOrderResult);
+  // Cancels order.
+  // Отменяет заявку.
+  rpc CancelOrder(proto.tradeapi.v1.CancelOrderRequest) returns (proto.tradeapi.v1.CancelOrderResult);
+  // Returns the list of orders.
+  // Возвращает список заявок.
+  rpc GetOrders(proto.tradeapi.v1.GetOrdersRequest) returns (proto.tradeapi.v1.GetOrdersResult);
+}

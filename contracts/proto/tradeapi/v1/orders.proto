@@ -1,0 +1,250 @@
+syntax = "proto3";
+
+package proto.tradeapi.v1;
+
+option csharp_namespace = "Finam.TradeApi.Proto.V1";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+import "proto/tradeapi/v1/common.proto";
+
+// Order placement properties.
+// Поведение заявки при выставлении в стакан.
+enum OrderProperty  {
+  // Value is not specified. Do not use.
+  // Значение не указано. Не использовать.
+  ORDER_PROPERTY_UNSPECIFIED = 0;
+  // The residual of partially matched order is to stay in OrderBook.
+  // Неисполненная часть заявки помещается в очередь заявок биржи.
+  ORDER_PROPERTY_PUT_IN_QUEUE = 1;
+  // The residual of partially matched order is to be cancelled.
+  // Неисполненная часть заявки снимается с торгов.
+  ORDER_PROPERTY_CANCEL_BALANCE = 2;
+  // Filling the order only in case the posibility of immediate and full execution.
+  // Сделки совершаются только в том случае, если заявка может быть удовлетворена полностью и сразу при выставлении.
+  ORDER_PROPERTY_IMM_OR_CANCEL = 3;
+}
+
+// Conditional order types.
+// Типы условных ордеров.
+enum OrderConditionType {
+  // Value is not specified. Do not use.
+  // Значение не указано. Не использовать.
+  ORDER_CONDITION_TYPE_UNSPECIFIED = 0;
+  // Best Bid.
+  // Лучшая цена покупки.
+  ORDER_CONDITION_TYPE_BID = 1;
+  // Best Bid or Last trade price and higher.
+  // Лучшая цена покупки или сделка по заданной цене и выше.
+  ORDER_CONDITION_TYPE_BID_OR_LAST = 2;
+  // Best Ask.
+  // Лучшая цена продажи.
+  ORDER_CONDITION_TYPE_ASK = 3;
+  // Best Ask or Last trade price and lower.
+  // Лучшая цена продажи или сделка по заданной цене и ниже.
+  ORDER_CONDITION_TYPE_ASK_OR_LAST = 4;
+  // Placement time. Parameter OrderCondition.time must be set.
+  // Время выставления заявки на Биржу. Параметр OrderCondition.time должен быть установлен.
+  ORDER_CONDITION_TYPE_TIME = 5;
+  // Coverage below specified.
+  // Обеспеченность ниже заданной.
+  ORDER_CONDITION_TYPE_COV_DOWN = 6;
+  // Coverage above specified.
+  // Обеспеченность выше заданной.
+  ORDER_CONDITION_TYPE_COV_UP = 7;
+  // Last trade price and higher.
+  // Сделка на рынке по заданной цене или выше.
+  ORDER_CONDITION_TYPE_LAST_UP = 8;
+  // Last trade price and lower.
+  // Сделка на рынке по заданной цене или ниже.
+  ORDER_CONDITION_TYPE_LAST_DOWN = 9;
+}
+
+// Order placement properties.
+// Свойства выставления заявок.
+message OrderCondition {
+  // Condition type.
+  // Тип условия.
+  OrderConditionType type = 1;
+  // Conditional value.
+  // Значение для условия.
+  double price = 2;
+  // Placement time.
+  // Время выставления.
+  google.protobuf.Timestamp time = 3;
+}
+
+// New Order Request.
+// Запрос на создание заявки.
+message NewOrderRequest {
+  // Trade Account ID.
+  // Идентификатор торгового счёта.
+  string client_id = 1;
+  // Trading Board.
+  // Режим торгов.
+  string security_board = 2;
+  // Security Code.
+  // Тикер инструмента.
+  string security_code = 3;
+  // Transaction direction.
+  // Направление сделки.
+  BuySell buy_sell = 4;
+  // Order volume in lots.
+  // Количество лотов инструмента для заявки.
+  int32 quantity = 5;
+  // Use credit. Not available in derivative market.
+  // Использовать кредит. Недоступно для срочного рынка.
+  bool use_credit = 6;
+  // Order price. Use "null" to place Market Order.
+  // Цена заявки. Используйте "null", чтобы выставить рыночную заявку.
+  google.protobuf.DoubleValue price = 7;
+  // Unfilled order execution property.
+  // Свойства исполнения частично исполненных заявок.
+  OrderProperty property = 8;
+  // Order placement properties.
+  // Свойства выставления заявок.
+  OrderCondition condition = 9;
+  // Order lifetime condition.
+  // Условие по времени действия заявки.
+  OrderValidBefore valid_before = 10;
+}
+
+// NewOrderRequest result.
+// Результат выполнения NewOrderRequest.
+message NewOrderResult {
+  // Trade Account Id.
+  // Идентификатор торгового счёта.
+  string client_id = 1;
+  // Transaction Id, which can be used to cancel order or find corresponding order_no in Event service.
+  // Идентификатор транзакции, который может быть использован для отмены заявки или определения номера заявки в сервисе событий.
+  int32 transaction_id = 2;
+  // Security Code.
+  // Тикер инструмента.
+  string security_code = 3;
+}
+
+// Cancel Order Request.
+// Запрос на отмену заявки.
+message CancelOrderRequest {
+  // Trade Account Id.
+  // Идентификатор торгового счёта.
+  string client_id = 1;
+  // Transaction Id, which can be used to cancel order or find corresponding order_no in Event service.
+  // Идентификатор транзакции, который может быть использован для отмены заявки или определения номера заявки в сервисе событий.
+  int32 transaction_id = 2;
+}
+
+// CancelOrderRequest result.
+// Результат выполнения CancelOrderRequest.
+message CancelOrderResult {
+  // Trade Account Id.
+  // Идентификатор торгового счёта.
+  string client_id = 1;
+  // Transaction Id, which can be used to cancel order or find corresponding order_no in Event service.
+  // Идентификатор транзакции, который может быть использован для отмены заявки или определения номера заявки в сервисе событий.
+  int32 transaction_id = 2;
+}
+
+// Get Orders Request.
+// Запрос списка заявок.
+message GetOrdersRequest {
+  // Trade Account ID.
+  // Идентификатор торгового счёта.
+  string client_id = 1;
+  // Include executed orders in response.
+  // Вернуть исполненные заявки.
+  bool include_matched = 2;
+  // Include canceled orders in response.
+  // Вернуть отмененные заявки.
+  bool include_canceled = 3;
+  // Include active orders in response.
+  // Вернуть активные заявки.
+  bool include_active = 4;
+}
+
+// Order status.
+// Состояние заявки.
+enum OrderStatus {
+  // Value is not specified. Do not use.
+  // Значение не указано. Не использовать.
+  ORDER_STATUS_UNSPECIFIED = 0;
+  // Order is not in OrderBook.
+  // Заявка не выставлена.
+  ORDER_STATUS_NONE = 1;
+  // Order is in OrderBook.
+  // Заявка выставлена.
+  ORDER_STATUS_ACTIVE = 2;
+  // Order is canceled.
+  // Заявка отменена.
+  ORDER_STATUS_CANCELLED = 3;
+  // Order is matched.
+  // Заявка исполнена.
+  ORDER_STATUS_MATCHED = 4;
+}
+
+// Order.
+// Заявка.
+message Order {
+  // Order No. Appear only when an order is placed in OrderBook.
+  // Биржевой номер заявки. Появляется после того, как заявка попадает в стакан.
+  int64 order_no = 1;
+  // Transaction Id . Assigned when a command for new order creation is sent.
+  // Идентификатор транзакции. Назначается после подачи команды на создание новой заявки.
+  int32 transaction_id = 2;
+  // Security Code.
+  // Тикер инструмента.
+  string security_code = 3;
+  // Trade Account ID.
+  // Идентификатор торгового счёта.
+  string client_id = 4;
+  // Order status.
+  // Состояние заявки.
+  OrderStatus status = 5;
+  // Transaction direction.
+  // Направление сделки.
+  BuySell buy_sell = 6;
+  // Time of Order placement in UTC.
+  // Время регистрации заявки на бирже. В UTC.
+  google.protobuf.Timestamp created_at = 7;
+  // Lot price.
+  // Цена за лот.
+  double price = 8;
+  // Volume in lots.
+  // Количество, в лотах.
+  int32 quantity = 9;
+  // Residual volume in lots.
+  // Неисполненный остаток, в лотах.
+  int32 balance = 10;
+  // Rejection reason or conditional order resolution.
+  // Причина отказа или вердикт по условной заявке.
+  string message = 11;
+  // Price currency.
+  // Валюта цены.
+  string currency = 12;
+  // Conditional order properties.
+  // Параметры условной заявки.
+  OrderCondition condition = 13;
+  // Order lifetime.
+  // Время действия заявки.
+  OrderValidBefore valid_before = 14;
+  // Time of order registration on the server in UTC.
+  // Время, когда заявка была зарегистрирована на сервере. В UTC.
+  google.protobuf.Timestamp accepted_at = 15;
+  // Security Board.
+  // Основной режим торгов инструмента.
+  string security_board = 16;
+  // Market.
+  // Рынок.
+  proto.tradeapi.v1.Market market = 17;
+}
+
+// GetOrdersRequest result.
+// Результат GetOrdersRequest.
+message GetOrdersResult {
+  // Trade Account ID.
+  // Идентификатор торгового счёта.
+  string client_id = 1;
+  // Orders list.
+  // Список заявок.
+  repeated Order orders = 2;
+}

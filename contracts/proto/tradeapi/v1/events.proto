@@ -1,0 +1,298 @@
+syntax = "proto3";
+
+package proto.tradeapi.v1;
+
+option csharp_namespace = "Finam.TradeApi.Proto.V1";
+
+import "proto/tradeapi/v1/common.proto";
+import "proto/tradeapi/v1/orders.proto";
+import "proto/tradeapi/v1/portfolios.proto";
+import "google/protobuf/timestamp.proto";
+
+// Timeframe.
+// Таймфрейм.
+message TimeFrame {
+  enum Unit {
+    // Value is not specified. Do not use.
+    // Значение не указано. Не использовать.
+    UNIT_UNSPECIFIED = 0;
+    // Munute.
+    // Минута.
+    UNIT_MINUTE = 1;
+    // Hour.
+    // Час.
+    UNIT_HOUR = 2;
+    // Day.
+    // День.
+    UNIT_DAY = 3;
+    // Week.
+    // Неделя.
+    UNIT_WEEK = 4;
+    // Month.
+    // Месяц.
+    UNIT_MONTH = 5;
+    // Quarter.
+    // Квартал.
+    UNIT_QUARTER = 6;
+    // Year.
+    // Год.
+    UNIT_YEAR = 7;
+  }
+
+  // Timeframe units.
+  // Единицы измерения таймфрейма.
+  Unit time_unit = 1;
+}
+
+// Subscription/unsubscription.
+// Подписка/отписка.
+message SubscriptionRequest {
+  // Set only one parameter.
+  // Определите только одно из полей.
+  oneof payload {
+    // OrderBook subscription request.
+    // Запрос подписки на стакан.
+    proto.tradeapi.v1.OrderBookSubscribeRequest order_book_subscribe_request = 1;
+    // OrderBook unsubscribe request.
+    // Запрос на отписку от стакана.
+    proto.tradeapi.v1.OrderBookUnsubscribeRequest order_book_unsubscribe_request = 2;
+    // Subscribe for trades and orders.
+    // Запрос подписки на ордера и сделки.
+    proto.tradeapi.v1.OrderTradeSubscribeRequest order_trade_subscribe_request = 3;
+    // Cancel all previous subscription for trades and orders.
+    // Отменить все предыдущие запросы на подписки на ордера и сделки.
+    proto.tradeapi.v1.OrderTradeUnsubscribeRequest order_trade_unsubscribe_request = 4;
+  }
+}
+
+// Event.
+// Событие.
+message Event {
+  // It is possible to set the only field.
+  // Только одно из полей может быть заполнено.
+  oneof payload {
+    // Order event.
+    // Событие с заявкой.
+    proto.tradeapi.v1.OrderEvent order = 1;
+    // Trade event.
+    // Событие со сделкой.
+    proto.tradeapi.v1.TradeEvent trade = 2;
+    // OrderBook event.
+    // Событие стакана.
+    proto.tradeapi.v1.OrderBookEvent order_book = 3;
+    // Portfolio event.
+    // Событие портфеля.
+    proto.tradeapi.v1.PortfolioEvent portfolio = 5;
+    // Request execution result.
+    // Результат выполнения запроса.
+    proto.tradeapi.v1.ResponseEvent response = 10;
+  }
+}
+
+// OrderBook subscribe request.
+// Запрос подписки на стакан.
+message OrderBookSubscribeRequest {
+  // Request ID.
+  // Идентификатор запроса.
+  string request_id = 1;
+  // Security Code.
+  // Тикер инструмента.
+  string security_code = 2;
+  // Trading Board.
+  // Режим торгов.
+  string security_board = 3;
+}
+
+// OrderBook unsubscribe request.
+// Запрос на отписку от стакана.
+message OrderBookUnsubscribeRequest {
+  // Request ID.
+  // Идентификатор запроса.
+  string request_id = 1;
+  // Security Code.
+  // Тикер инструмента.
+  string security_code = 2;
+  // Trading Board.
+  // Режим торгов.
+  string security_board = 3;
+}
+
+// Subscribe for trades and orders.
+// Запрос подписки на ордера и сделки.
+message OrderTradeSubscribeRequest {
+  // Request ID.
+  // Идентификатор запроса.
+  string request_id = 1;
+  // Включить сделки в подписку.
+  bool include_trades = 2;
+  // Включить заявки в подписку.
+  // Тикер инструмента.
+  bool include_orders = 3;
+  // Торговые коды счетов.
+  repeated string client_ids = 4;
+}
+
+// Cancel all previous subscription for trades and orders.
+// Отменить все предыдущие запросы на подписки на ордера и сделки.
+message OrderTradeUnsubscribeRequest {
+  // Request ID.
+  // Идентификатор запроса.
+  string request_id = 1;
+}
+
+// Portfolio subscription.
+// Подписка на портфель.
+message PortfolioSubscription {
+  // Trade Account ID.
+  // Идентификатор торгового счёта.
+  string client_id = 1;
+  // What kind of data the response contains.
+  // Какие данные будут в ответе.
+  proto.tradeapi.v1.PortfolioContent content = 2;
+}
+
+// Order event.
+// Событие с заявкой.
+message OrderEvent {
+  // Order No. Appear only when an order is placed in OrderBook.
+  // Биржевой номер заявки. Появляется после того, как заявка попадает в стакан.
+  int64 order_no = 1;
+  // Transaction Id . Assigned when a command for new order creation is sent.
+  // Идентификатор транзакции. Назначается после подачи команды на создание новой заявки.
+  int32 transaction_id = 2;
+  // Security Code.
+  // Тикер инструмента.
+  string security_code = 3;
+  // Trade Account ID.
+  // Идентификатор торгового счёта.
+  string client_id = 4;
+  // Order status.
+  // Состояние заявки.
+  OrderStatus status = 5;
+  // Transaction direction.
+  // Направление сделки.
+  BuySell buy_sell = 6;
+  // Time of Order placement in UTC.
+  // Время регистрации заявки на бирже. В UTC.
+  google.protobuf.Timestamp created_at = 7;
+  // Lot price.
+  // Цена за лот.
+  double price = 8;
+  // Volume in lots.
+  // Количество, в лотах.
+  int32 quantity = 9;
+  // Residual volume in lots.
+  // Неисполненный остаток, в лотах.
+  int32 balance = 10;
+  // Rejection reason or conditional order resolution.
+  // Причина отказа или вердикт по условной заявке.
+  string message = 11;
+  // Price currency.
+  // Валюта цены инструмента.
+  string currency = 12;
+  // Conditional order properties.
+  // Параметры условной заявки.
+  OrderCondition condition = 13;
+  // Order lifetime.
+  // Время действия заявки.
+  OrderValidBefore valid_before = 14;
+  // Time of order registration on the server in UTC.
+  // Время, когда заявка была зарегистрирована на сервере. В UTC.
+  google.protobuf.Timestamp accepted_at = 15;
+}
+
+// Trade event.
+// Событие со сделкой.
+message TradeEvent {
+  // Security Code.
+  // Тикер инструмента.
+  string security_code = 1;
+  // Trade No.
+  // Номер сделки.
+  int64 trade_no = 2;
+  // Order No.
+  // Номер заявки.
+  int64 order_no = 3;
+  // Trade Account ID.
+  // Идентификатор торгового счёта.
+  string client_id = 4;
+  // Time of trade registration on stock exchange in UTC.
+  // Время исполнения сделки на бирже. В UTC.
+  google.protobuf.Timestamp created_at = 5;
+  // Volume in lots.
+  // Количество, в лотах.
+  int64 quantity = 6;
+  // Trade Price.
+  // Цена сделки.
+  double price = 7;
+  // Trade currency value.
+  // Объём сделки в валюте инструмента.
+  double value = 8;
+  // Transaction direction.
+  // Направление сделки.
+  proto.tradeapi.v1.BuySell buy_sell = 9;
+  // Fee, RUB.
+  // Комиссия, в рублях.
+  double commission = 10;
+  // Trade currency.
+  // Валюта сделки.
+  string currency = 11;
+  // Accrued interest.
+  // НКД сделки.
+  double accrued_interest = 12;
+}
+
+// Order book row.
+// Строка стакана.
+message OrderBookRow
+{
+  // Price.
+  // Цена.
+  double price = 1 [json_name = "p"];
+  // Lots.
+  // Количество лотов.
+  int64 quantity = 2 [json_name = "q"];
+}
+
+// OrderBook event.
+// Событие стакана.
+message OrderBookEvent {
+  // Security Code.
+  // Тикер инструмента.
+  string security_code = 1;
+  // Trading Board.
+  // Режим торгов.
+  string security_board = 2;
+  // Asks.
+  // Заявки на продажу.
+  repeated OrderBookRow asks = 3;
+  // Bids.
+  // Заявки на покупку.
+  repeated OrderBookRow bids = 4;
+}
+
+// Portfolio event.
+// Событие портфеля.
+message PortfolioEvent {
+  // Trade Account ID.
+  // Идентификатор торгового счёта.
+  string client_id = 1;
+  // What kind of data portfolio event contains.
+  // Какие данные находятся в событии портфеля.
+  proto.tradeapi.v1.PortfolioContent content = 2;
+  // Current equity, RUB.
+  // Текущая оценка портфеля в рублях.
+  double equity = 3;
+  // Open Equity, RUB.
+  // Входящая оценка портфеля в рублях.
+  double balance = 4;
+  // DEPO positions.
+  // Позиции DEPO.
+  repeated PositionRow positions = 5;
+  // Currency positions.
+  // Валютные позиции.
+  repeated CurrencyRow currencies = 6;
+  // Money positions.
+  // Денежные позиции.
+  repeated MoneyRow money = 7;
+}

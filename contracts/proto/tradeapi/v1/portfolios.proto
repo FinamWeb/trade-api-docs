@@ -1,0 +1,148 @@
+syntax = "proto3";
+
+package proto.tradeapi.v1;
+
+option csharp_namespace = "Finam.TradeApi.Proto.V1";
+
+import "proto/tradeapi/v1/common.proto";
+
+// What kind of data the response contains.
+// Какие данные будут в ответе.
+message PortfolioContent {
+  // Currency positions.
+  // Валютные позиции.
+  bool include_currencies = 1;
+  // Money positions.
+  // Денежные позиции.
+  bool include_money = 2;
+  // DEPO positions.
+  // Позиции DEPO.
+  bool include_positions = 3;
+  // Buy and Sell limits.
+  // Лимиты покупки и продажи.
+  bool include_max_buy_sell = 4;
+}
+
+// DEPO position.
+// Позиция DEPO.
+message PositionRow {
+  // Security Code.
+  // Тикер инструмента.
+  string security_code = 1;
+  // Security market.
+  // Рынок инструмента.
+  proto.tradeapi.v1.Market market = 2;
+  // Current position, items.
+  // Текущая позиция, шт.
+  int64 balance = 3;
+  // Current price in price_currency.
+  // Текущая цена в валюте цены инструмента.
+  double current_price = 4;
+  // Positions equity.
+  // Оценка позиции по инструменту в валюте риска.
+  double equity = 5;
+  // Balanced price of security in price_currency.
+  // Балансовая цена в валюте цены инструмента.
+  double average_price = 6;
+  // Risk currency.
+  // Валюта риска.
+  string currency = 7;
+  // P/L for initial position, in risk currency.
+  // Прибыль/убыток по входящей позиции, в валюте риска.
+  double accumulated_profit = 8;
+  // Daily P/L, in risk currency.
+  // Прибыль/убыток по сделкам за день, в валюте риска.
+  double today_profit = 9;
+  // Unrealized P/L, in average_price_currency.
+  // Нереализованные прибыль/убытки по балансовой цене в валюте инструмента.
+  double unrealized_profit = 10;
+  // P/L in price_currency.
+  // Прибыль/убытки в валюте цены инструмента.
+  double profit = 11;
+  // Max lots to buy.
+  // Максимальное кол-во лотов, доступных для покупки.
+  int64 max_buy = 12;
+  // Max lots to sell.
+  // Максимальное кол-во лотов, доступных для продажи.
+  int64 max_sell = 13;
+  // Security price currency.
+  // Валюта цены инструмента.
+  string price_currency = 14;
+  // Balanced price currency.
+  // Валюта балансовой цены.
+  string average_price_currency = 15;
+  // Risk Currency to Price currency Cross rate.
+  // Кросс-курс валюты балансовой цены к валюте риска.
+  double average_rate = 16;
+}
+
+// Currency position.
+// Валютная позиция.
+message CurrencyRow {
+  // Currency code.
+  // Код валюты.
+  string name = 1;
+  // Current position.
+  // Текущая позиция.
+  double balance = 2;
+  // Currency rate for RUB.
+  // Курс валюты к рублю.
+  double cross_rate = 3;
+  // Equity in RUB.
+  // Оценка в рублях.
+  double equity = 4;
+  // Unrealized P/L, in RUB.
+  // Нереализованные прибыль/убытки в рублях.
+  double unrealized_profit = 5;
+}
+
+// Money position.
+// Денежная позиция.
+message MoneyRow {
+  // Position market.
+  // Рынок позиции.
+  proto.tradeapi.v1.Market market = 1;
+  // Currency code.
+  // Код валюты.
+  string currency = 2;
+  // Current position.
+  // Текущая позиция.
+  double balance = 3;
+}
+
+// Get Portfolio Request.
+// Запрос портфеля.
+message GetPortfolioRequest {
+  // Trade Account ID.
+  // Идентификатор торгового счёта.
+  string client_id = 1;
+  // What data to return by request.
+  // Какие данные возвращать в ответе.
+  PortfolioContent content = 2;
+}
+
+// GetPortfolioRequest result.
+// Результат GetPortfolioRequest.
+message GetPortfolioResult {
+  // Trade Account ID.
+  // Идентификатор торгового счёта.
+  string client_id = 1;
+  // What kind of data the response contains.
+  // Какие данные будут в ответе.
+  PortfolioContent content = 2;
+  // Current equity, RUB.
+  // Текущая оценка портфеля в рублях.
+  double equity = 3;
+  // Open Equity, RUB.
+  // Входящая оценка портфеля в рублях.
+  double balance = 4;
+  // DEPO positions.
+  // Позиции DEPO.
+  repeated PositionRow positions = 5;
+  // Currency positions.
+  // Валютные позиции.
+  repeated CurrencyRow currencies = 6;
+  // Money positions.
+  // Денежные позиции.
+  repeated MoneyRow money = 7;
+}
