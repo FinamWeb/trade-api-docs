@@ -96,7 +96,7 @@ const config = {
             label: 'Документация',
           },
           {
-            href: 'https://trade-api.comon.ru/swagger/index.html',
+            href: 'https://trade-api.finam.ru/swagger/index.html',
             label: 'Swagger',
             position: 'left',
           },
@@ -116,7 +116,7 @@ const config = {
           },
           {
             label: 'Swagger',
-            href: 'https://trade-api.comon.ru/swagger/index.html',
+            href: 'https://trade-api.finam.ru/swagger/index.html',
           },
         ],
       },
