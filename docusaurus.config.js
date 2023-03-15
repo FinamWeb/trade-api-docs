@@ -10,7 +10,7 @@ const metaImageUrl = `${domain}${pathname}img/meta-image.png`;
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'Comon Trade API',
+  title: 'Trade API',
   tagline:
     'Сервис для организации взаимодействия пользовательских приложений с сервером TRANSAQ',
   url: domain,
@@ -79,7 +79,7 @@ const config = {
         },
         {
           property: 'og:image:alt',
-          content: 'Comon Trade API — Все самое необходимое для алготрейдинга',
+          content: 'Trade API — Все самое необходимое для алготрейдинга',
         },
       ],
       navbar: {
