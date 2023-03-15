@@ -12,4 +12,4 @@ sidebar_position: 2
 
 ## Адрес сервиса
 
-Вызовы выполняются по адресу: https://trade-api.comon.ru/
+Вызовы выполняются по адресу: https://trade-api.finam.ru/
