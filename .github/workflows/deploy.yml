@@ -8,6 +8,7 @@ on:
 jobs:
   deploy:
     name: Deploy to GitHub Pages
+    if: github.repository == 'FinamWeb/trade-api-docs'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
