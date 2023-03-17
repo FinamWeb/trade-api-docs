@@ -4,6 +4,9 @@ sidebar_position: 20
 
 # FAQ
 
+## Где взять proto файлы?
+Вот [здесь](https://github.com/FinamWeb/trade-api-docs/tree/master/contracts).
+
 ## Что означает ошибка: *"Invalid parameter 'szUnion'"*?
 Счет не зарегистрирован в системе TRASAQ или счет не является единым.
 
