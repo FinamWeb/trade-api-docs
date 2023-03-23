@@ -47,7 +47,7 @@ sidebar_position: 3
 
 `status` - текущий статус заявки. Тип [OrderStatus](#orderstatus);
 
-`buySell` - тип [BuySell](common-types.md#buysell)
+`buySell` - тип [BuySell](common-types.md#buysell);
 
 `createdAt` - время регистрации заявки на бирже (UTC);
 
