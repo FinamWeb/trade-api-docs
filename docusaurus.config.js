@@ -101,6 +101,11 @@ const config = {
             position: "left",
           },
           {
+            href: "https://www.finam.ru/landings/hackathon-trade-api/",
+            label: "Участвовать в хакатоне Trade API",
+            position: "right",
+          },
+          {
             href: "mailto:trade_api@corp.finam.ru",
             label: "Обратная связь",
             position: "right",
