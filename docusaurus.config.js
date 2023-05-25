@@ -101,8 +101,8 @@ const config = {
             position: "left",
           },
           {
-            href: "https://www.finam.ru/landings/hackathon-trade-api/",
-            label: "Участвовать в хакатоне Trade API",
+            href: "https://vk.com/finam_trade_api",
+            label: "Trade API VK",
             position: "right",
           },
           {
