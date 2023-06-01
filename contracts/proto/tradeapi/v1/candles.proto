@@ -1,0 +1,167 @@
+syntax = "proto3";
+
+package proto.tradeapi.v1;
+
+option csharp_namespace = "Finam.TradeApi.Proto.V1";
+
+import "google/protobuf/timestamp.proto";
+import "google/type/date.proto";
+import "proto/tradeapi/v1/common.proto";
+
+// Day candle.
+// Дневная свеча.
+message DayCandle {
+  // Date (local time).
+  // Дата (по времени биржи).
+  google.type.Date date = 1;
+  // Open price.
+  // Цена открытия.
+  Decimal open = 2;
+  // Close price.
+  // Цена закрытия.
+  Decimal close = 3;
+  // High price.
+  // Максимальная цена.
+  Decimal high = 4;
+  // Low price.
+  // Минимальная цена.
+  Decimal low = 5;
+  // Volume.
+  // Объем торгов.
+  int64 volume = 6;
+}
+
+// Intraday candle.
+// Внетридневная свеча.
+message IntradayCandle {
+  // Time (UTC).
+  // Время (по UTC).
+  google.protobuf.Timestamp timestamp = 1;
+  // Open price.
+  // Цена открытия.
+  Decimal open = 2;
+  // Close price.
+  // Цена закрытия.
+  Decimal close = 3;
+  // High price.
+  // Максимальная цена.
+  Decimal high = 4;
+  // Low price.
+  // Минимальная цена.
+  Decimal low = 5;
+  // Volume.
+  // Объем торгов.
+  int64 volume = 6;
+}
+
+// Timeframe.
+// Временной интервал.
+enum IntradayCandleTimeFrame {
+  // Value is not specified. Do not use.
+  // Значение не указано. Не использовать.
+  INTRADAYCANDLE_TIMEFRAME_UNSPECIFIED = 0;
+  // 1 minute.
+  // 1 минута.
+  INTRADAYCANDLE_TIMEFRAME_M1 = 1;
+  // 5 minutes.
+  // 5 минут.
+  INTRADAYCANDLE_TIMEFRAME_M5 = 2;
+  // 15 minutes.
+  // 15 минут.
+  INTRADAYCANDLE_TIMEFRAME_M15 = 3;
+  // 1 hour.
+  // 1 час.
+  INTRADAYCANDLE_TIMEFRAME_H1 = 4;
+}
+
+// Timeframe for day candle.
+// Временной интервал дневной свечи.
+enum DayCandleTimeFrame {
+  // Value is not specified. Do not use.
+  // Значение не указано. Не использовать.
+  DAYCANDLE_TIMEFRAME_UNSPECIFIED = 0;
+  // 1 day.
+  // 1 день.
+  DAYCANDLE_TIMEFRAME_D1 = 1;
+  // 1 week.
+  // 1 неделя.
+  DAYCANDLE_TIMEFRAME_W1 = 2;
+}
+
+// Day candles interval.
+// Интервал запроса дневных свечей.
+message DayCandleInterval {
+  // Date from.
+  // Дата начала.
+  google.type.Date from = 1;
+  // Date to.
+  // Дата окончания.
+  google.type.Date to = 2;
+  // Candles count limit.
+  // Количество свечей.
+  int32 count = 3;
+}
+
+// Intraday candles interval.
+// Интервал запроса внутридневных свечей.
+message IntradayCandleInterval {
+  // Date from.
+  // Дата начала.
+  google.protobuf.Timestamp from = 1;
+  // Date to.
+  // Дата окончания.
+  google.protobuf.Timestamp to = 2;
+  // Candles count limit.
+  // Количество свечей.
+  int32 count = 3;
+}
+
+// Get day candles request.
+// Запрос дневных свечей.
+message GetDayCandlesRequest {
+  // Trading Board.
+  // Режим торгов.
+  string security_board = 1;
+  // Security Code.
+  // Тикер инструмента.
+  string security_code = 2;
+  // Timeframe.
+  // Временной интервал.
+  DayCandleTimeFrame time_frame = 3;
+  // Interval.
+  // Интервал.
+  DayCandleInterval interval = 4;
+}
+
+// GetDayCandlesRequest result.
+// Результат GetDatCandlesRequest.
+message GetDayCandlesResult {
+  // Candles list.
+  // Список свечей.
+  repeated DayCandle candles = 1;
+}
+
+// Get intraday candles request.
+// Запрос внутридневных свечей.
+message GetIntradayCandlesRequest {
+  // Trading Board.
+  // Режим торгов.
+  string security_board = 1;
+  // Security Code.
+  // Тикер инструмента.
+  string security_code = 2;
+  // Timeframe.
+  // Временной интервал.
+  IntradayCandleTimeFrame time_frame = 3;
+  // Interval.
+  // Интервал.
+  IntradayCandleInterval interval = 4;
+}
+
+// GetIntradayCandlesRequest result.
+// Результат GetIntradayCandlesRequest.
+message GetIntradayCandlesResult {
+  // Candles list.
+  // Список свечей.
+  repeated IntradayCandle candles = 1;
+}
