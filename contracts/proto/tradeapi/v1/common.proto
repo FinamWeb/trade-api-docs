@@ -101,3 +101,18 @@ message OrderValidBefore {
   // Время действия заявки.
   google.protobuf.Timestamp time = 2;
 }
+
+// Real number with fixed precision (including integers).
+// The total value is calculated as follows: num * 10^-scale.
+// https://en.wikipedia.org/wiki/Scientific_notation
+// Example:
+// The number "250.655" is Decimal type with num = 250655 and scale = 3, 250.655 = 250655 * 10^-3
+message Decimal {
+  // Mantissa.
+  // Мантисса.
+  int64 num = 1;
+
+  // exponent for base 10.
+  // Экспонента.
+  uint32 scale = 2;
+}
