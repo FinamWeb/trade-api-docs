@@ -62,6 +62,9 @@ message SubscriptionRequest {
     // Cancel all previous subscription for trades and orders.
     // Отменить все предыдущие запросы на подписки на ордера и сделки.
     proto.tradeapi.v1.OrderTradeUnsubscribeRequest order_trade_unsubscribe_request = 4;
+    // Keep-alive request.
+    // Keep-alive запрос.
+    proto.tradeapi.v1.KeepAliveRequest keep_alive_request = 5;
   }
 }
 
@@ -295,4 +298,12 @@ message PortfolioEvent {
   // Money positions.
   // Денежные позиции.
   repeated MoneyRow money = 7;
+}
+
+// Keep-alive request.
+// Keep-alive запрос.
+message KeepAliveRequest {
+  // Request ID.
+  // Идентификатор запроса.
+  string request_id = 1;
 }
