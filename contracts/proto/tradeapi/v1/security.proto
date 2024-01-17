@@ -47,9 +47,10 @@ message Security {
   // Currency.
   // Валюта номинала инструмента.
   string currency = 7;
-  // Instrument code.
-  // Код инструмента.
-  string instrument_code = 8;
+  // Instrument code (not used).
+  // Код инструмента (не используется).
+  reserved 8;
+  reserved "instrument_code";
   // Security name.
   // Название инструмента.
   string short_name = 9;
