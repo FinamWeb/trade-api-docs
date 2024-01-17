@@ -17,7 +17,6 @@ sidebar_position: 4
   "lotSize": 0,
   "minStep": 0,
   "currency": "string",
-  "instrumentCode": "string",
   "shortName": "string",
   "properties": 0,
   "timeZoneName": "string",
@@ -42,8 +41,6 @@ sidebar_position: 4
 `minStep` - минимальный шаг цены;
 
 `currency` - код валюты номинала цены;
-
-`instrumentCode` - код инструмента;
 
 `shortName` - название инструмента;
 
