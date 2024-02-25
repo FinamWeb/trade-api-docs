@@ -5,10 +5,17 @@ package grpc.tradeapi.v1;
 option csharp_namespace = "Finam.TradeApi.Grpc.V1";
 
 import "proto/tradeapi/v1/security.proto";
+import "google/protobuf/wrappers.proto";
 
 // Securities list request.
 // Запрос списка инструментов.
 message GetSecuritiesRequest {
+  // Trading Board.
+  // Режим торгов
+  google.protobuf.StringValue board = 1;
+  // Security Code.
+  // Тикер инструмента.
+  google.protobuf.StringValue seccode = 2;
 }
 
 // Result of get security lists request.
