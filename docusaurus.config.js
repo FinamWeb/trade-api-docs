@@ -15,7 +15,7 @@ const config = {
     "Сервис для организации взаимодействия пользовательских приложений с сервером TRANSAQ",
   url: domain,
   baseUrl: pathname,
-  onBrokenLinks: "log",
+  onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
   favicon: "img/favicon.ico",
   trailingSlash: false,
