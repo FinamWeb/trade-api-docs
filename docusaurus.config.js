@@ -55,6 +55,9 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      validation: {
+        excludedLinks: ['https://tradeapi.finam.ru'],
+      },
       metadata: [
         { name: "twitter:card", content: "summary_large_image" },
         {
